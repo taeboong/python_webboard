@@ -1,0 +1,47 @@
+<script language="javascript">
+	{{bData.update_hit}}
+	function del() {
+		var res = confirm("정말 삭제 하시겠습니까?");
+		if(res==true){
+			location.href = "{% url 'delete' bData.id %}";
+		}    	
+    }
+	
+    function modify() {
+    	location.href = "{% url 'modify_form' bData.id %}?page={{page}}&keyword={{keyword}}";
+    }
+    
+    function viewList() {
+    	location.href = '/?page={{page}}&keyword={{keyword}}';
+    }
+    
+</script>
+
+<html>
+	<head>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>View</title>
+	</head>
+
+	<body>
+		<div class="container">
+			<section id="container">
+				<div class="form-group">
+					<label for="title" class="col-sm-2 control-label">제목</label>
+					<input type="text" id="title" name="title" class="form-control" value="{{bData.title}}" readonly="readonly" />
+				</div>
+				<div class="form-group">
+					<label for="content" class="col-sm-2 control-label">내용</label>
+					<textarea id="content" name="content" class="form-control" readonly="readonly" rows="15">{{bData.content}}</textarea>
+				</div>
+				<div align=right>
+					<button type="button" class="btn btn-default" onclick="javascript:del();">삭제</button>
+					<button type="button" class="btn btn-default" onclick="javascript:modify();">수정</button>
+					<button type="button" class="btn btn-primary" onclick="javascript:viewList();">목록</button>
+				</div>
+			</section>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,55 @@
+<script language="javascript">
+    // 자바 스크립트 시작
+    function writeCheck() {
+        var form = document.writeform;
+
+        if (!form.title.value) {
+            alert("제목을 적어주세요");
+            form.title.focus();
+            return;
+        }
+        
+        if (!form.content.value) {
+            alert("내용을 적어주세요");
+            form.text.focus();
+            return;
+        }
+                
+        form.submit();    
+    }
+    
+    function viewList() {
+    	location.href = '/?page={{page}}';
+    }
+    
+</script>
+
+<html>
+	<head>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Write</title>
+	</head>
+
+	<body>
+		<div class="container">
+			<section id="container">
+			<form name=writeform method=post action="/write/">{% csrf_token %}
+				<div class="form-group">
+					<label for="title" class="col-sm-2 control-label">제목</label>
+					<input type="text" id="title" name="title" class="form-control" maxlength=100/>
+				</div>
+				<div class="form-group">
+					<label for="content" class="col-sm-2 control-label">내용</label>
+					<textarea id="content" name="content" class="form-control" rows="15"></textarea>
+				</div>
+				<div align=right>
+					<button type="button" class="btn btn-default" onclick="javascript:writeCheck();">저장</button>
+					<button type="button" class="btn btn-primary" onclick="javascript:viewList();">목록</button>
+				</div>
+			</form>				
+			</section>
+		</div>
+	</body>
+</html>

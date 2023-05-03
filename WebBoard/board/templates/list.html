@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<HTML>
+	<script language="javascript">
+	    // 자바 스크립트 시작
+	    function search() {
+	        var form = document.searchform;
+	
+//	        if (!form.keyword.value) {
+//	            alert("검색어를 입력해주세요.");
+//	            form.keyword.focus();
+//	            return;
+//	        }
+	        	                
+	        form.submit();    
+	    }	    
+	</script>
+	<HEAD>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+		<TITLE>Web Board Test</TITLE>
+	</HEAD>
+	<BODY>
+		<div class="container">
+			<H1 align=center>Django Web Board</H1><br>
+          	<form  name=searchform action="/" method="GET">
+				<div class="form-row" style="float: right;">
+					<div class="input-group">
+						<input type="text" name="keyword" value="{{keyword}}" class="form-control" style="width: 20em;" maxlength="50" placeholder="검색어를 입력해주세요.">
+						<button id="searchBtn" type="button" class="btn btn-default" onclick="javascript:search();">검색</button>
+					</div>
+				</div>
+			</form>
+			<table class="table">
+				<thread>				
+				<tr>				
+					<td align=center><b>번호</b></td>
+					<td align=center><b>제목</b></td>
+					<td align=center><b>날짜</b></td>
+					<td align=center><b>조회</b></td>
+				</tr>
+				</thread>
+				<tbody>
+				{% if boardList %}
+					{% for bData in boardList %}
+					<tr>
+						<td align=center>{{ bData.id|stringformat:"d" }}</td>
+						<td><a href="{% url 'view' bData.id %}?page={{boardList.number}}&keyword={{keyword}}">{{bData.title}}</a></td>
+						<td align=center>{{bData.insert_dt|date:"Y-m-d H:i:s"}}</td>
+						<td align=center>{{bData.hit}}</td>
+					</tr>
+					{% endfor %}
+				{% else %}
+					{% if keyword %}
+					<tr>
+						<td colspan="4" align=center>검색 결과가 없습니다.</td>
+					</tr>
+					{% else %}
+					<tr>
+						<td colspan="4" align=center>게시물이 없습니다.</td>
+					</tr>
+					{% endif %}
+				{% endif %}
+				</tbody>
+				<tr>
+					<td align=left colspan=2>
+					{% if boardList.has_other_pages %}
+					  <ul class="pagination">
+					    {% if boardList.has_previous %}
+					      <li><a href="?page={{boardList.previous_page_number}}&keyword={{keyword}}">&laquo;</a></li>
+					    {% else %}
+					      <li class="disabled"><span>&laquo;</span></li>
+					    {% endif %}
+					    {% for i in page_range %}
+							{% if boardList.number == i %}
+								<li class="active"><span>{{ i }}</span></li>
+							{% else %}
+								<li><a href="?page={{ i }}&keyword={{keyword}}">{{ i }}</a></li>
+							{% endif %}
+					    {% endfor %}
+					    {% if boardList.has_next %}
+					      <li><a href="?page={{ boardList.next_page_number }}&keyword={{keyword}}">&raquo;</a></li>
+					    {% else %}
+					      <li class="disabled"><span>&raquo;</span></li>
+					    {% endif %}
+					  </ul>
+					{% endif %}
+					</td>
+					<td align=right colspan=2>
+						<button type="button" class="btn btn-primary" onclick="window.location='/write_form?page={{boardList.number}}'">작성</button>
+					</td>					
+				</tr>				
+			</table>
+		</div>
+		<br>
+		
+	</BODY>
+</HTML>
